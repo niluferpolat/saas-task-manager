@@ -1,5 +1,6 @@
 package com.nilufer.saas_task_manager_api.entity;
 
+import com.nilufer.saas_task_manager_api.dto.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,8 @@ private Integer progress;
 private String phase;
 private LocalDate dueDate;
 
+@Enumerated(EnumType.STRING)
+private ProjectStatus projectStatus;
 
 @ManyToOne
 @JoinColumn(name = "user_id")
