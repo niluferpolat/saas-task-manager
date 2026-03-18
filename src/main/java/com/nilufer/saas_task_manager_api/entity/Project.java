@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +19,11 @@ private Long id;
 
 private String name;
 private String description;
+
+private Integer progress;
+private String phase;
+private LocalDate dueDate;
+
 
 @ManyToOne
 @JoinColumn(name = "user_id")

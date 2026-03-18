@@ -27,12 +27,6 @@ public class Task extends BaseEntity{
     @Enumerated(EnumType.ORDINAL)
     private Priority priority;
 
-    private LocalDate dueDate;
-
-    @ManyToOne
-    @JoinColumn(name = "assignee_id")
-    private User assignee;
-
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
