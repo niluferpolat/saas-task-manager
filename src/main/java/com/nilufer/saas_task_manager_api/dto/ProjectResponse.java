@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -16,9 +17,12 @@ public class ProjectResponse {
     private Integer progress;
     private String phase;
     private LocalDate dueDate;
+    private List<TaskResponse> tasks;
 
-    public static ProjectResponse of(Project project){
-        return  new ProjectResponse(project.getId(), project.getName(), project.getDescription(),
-                project.getProjectStatus(), project.getProgress(), project.getPhase(), project.getDueDate());
+    public static ProjectResponse of(Project project) {
+        List<TaskResponse> taskResponses = project.getTasks().stream().map(TaskResponse::of).toList();
+
+        return new ProjectResponse(project.getId(), project.getName(), project.getDescription(),
+                project.getProjectStatus(), project.getProgress(), project.getPhase(), project.getDueDate(), taskResponses);
     }
 }

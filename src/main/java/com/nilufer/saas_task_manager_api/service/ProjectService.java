@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProjectService {
@@ -17,8 +18,13 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public List<Project> getProjects() {
-        return projectRepository.findAll();
+    public List<ProjectResponse> getProjects() {
+        return projectRepository.findAll().stream().map(ProjectResponse::of).toList();
+    }
+
+    public ProjectResponse getProjectById(Long id){
+        Project project = projectRepository.findById(id).orElseThrow();
+        return ProjectResponse.of(project);
     }
 
     @Transactional
@@ -35,7 +41,7 @@ public class ProjectService {
         project.setProjectStatus(dto.getStatus());
         project.setPhase(dto.getPhase());
         project.setDueDate(dto.getDueDate());
-        project.setProgress(dto.getProgress());
+        project.setProgress(Optional.ofNullable(dto.getProgress()).orElse(0));
         return project;
     }
 }

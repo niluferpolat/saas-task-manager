@@ -21,7 +21,12 @@ public class ProjectController {
     }
 
     @GetMapping
-    public List<Project> getProjects(){
+    public List<ProjectResponse> getProjects(){
         return projectService.getProjects();
+    }
+
+    @GetMapping("/{id}")
+    public ProjectResponse getProjectById(@PathVariable("id") Long id){
+        return projectService.getProjectById(id);
     }
 }
