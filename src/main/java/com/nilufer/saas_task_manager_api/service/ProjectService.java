@@ -7,6 +7,7 @@ import com.nilufer.saas_task_manager_api.repository.ProjectRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,27 @@ public class ProjectService {
         return ProjectResponse.of(project);
     }
 
+    public void deleteProject(Long id){
+        if(!projectRepository.existsById(id)){
+            throw new RuntimeException("Project not found with id:"+ id);
+        }
+        projectRepository.deleteById(id);
+    }
+
+    public ProjectResponse updateProject(Long id, ProjectRequestDto projectRequestDto){
+        Project project = projectRepository.findById(id).orElseThrow();
+        project.setProgress(projectRequestDto.getProgress());
+        project.setDueDate(projectRequestDto.getDueDate());
+        project.setPhase(projectRequestDto.getPhase());
+        project.setName(projectRequestDto.getName());
+        project.setDescription(projectRequestDto.getDescription());
+        project.setProjectStatus(projectRequestDto.getStatus());
+
+        Project updatedProject = projectRepository.save(project);
+        return ProjectResponse.of(updatedProject);
+
+    }
+
     @Transactional
     public ProjectResponse createProject(ProjectRequestDto dto) {
         Project project = mapToEntity(dto);
@@ -41,6 +63,7 @@ public class ProjectService {
         project.setProjectStatus(dto.getStatus());
         project.setPhase(dto.getPhase());
         project.setDueDate(dto.getDueDate());
+        project.setTasks(new ArrayList<>());
         project.setProgress(Optional.ofNullable(dto.getProgress()).orElse(0));
         return project;
     }
